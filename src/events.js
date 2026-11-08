@@ -1038,6 +1038,7 @@ export class SkiJumpEvent extends BaseEvent {
     this.quality = 0;
     this.result = 0;
     this.extension = 0;
+    this.extensionAt = 0;
     this.extended = false;
     this.flightT = 0;
     this.flightDur = 3.4;
@@ -1062,8 +1063,10 @@ export class SkiJumpEvent extends BaseEvent {
       const u = this.flightT / this.flightDur;
       if (u > 0.32 && u < 0.72) {
         this.extended = true;
+        this.extensionAt = u;
         this.extension = 2.4 + (1 - Math.abs(u - 0.5) * 2) * 2.2;
         this.result += this.extension;
+        this.landingX += this.extension;
         this.game.sound.tone(820, 0.14, 0.06, 'sine', 1180);
         this.game.toast(`EXTENDED — +${this.extension.toFixed(1)} M`, 'gold', 1000);
         this.game.burst(this.world.sx(this.x), this.game.groundY(1, 'skijump') - this.height(), 12, '#dfefff', 90, 0.6);
@@ -1118,7 +1121,8 @@ export class SkiJumpEvent extends BaseEvent {
     } else if (this.state === 'flight') {
       this.flightT += dt;
       const u = clamp(this.flightT / this.flightDur, 0, 1);
-      this.x = lerp(this.takeoffX, this.landingX, u);
+      const baseLandingX = this.landingX - this.extension;
+      this.x = lerp(this.takeoffX, baseLandingX, u) + this.extension * smoothstep(this.extensionAt, 1, u);
       const targetMeter = clamp(this.W / 155, 3.4, 10);
       this.meter = lerp(this.meter, targetMeter, 1 - Math.exp(-1.5 * dt));
       const targetCam = (this.takeoffX + this.landingX) / 2 - (this.W * 0.5) / this.meter;
