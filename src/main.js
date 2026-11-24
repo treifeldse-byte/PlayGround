@@ -5,13 +5,13 @@ import { SoundEngine } from './audio.js';
 import { SprintEvent, LongJumpEvent, JavelinEvent, SkiJumpEvent, CurlingEvent } from './events.js';
 
 const AI_DATA = [
-  { id: 'nakamura', name: 'K. NAKAMURA', code: 'JPN', kit: KITS.jpn, sprint: 9.79, longjump: 8.31, javelin: 83.5, hurdles: 12.25, shotput: 22.4, skijump: 136.5, snowboard: 9.98, curling: 28 },
-  { id: 'moreau', name: 'L. MOREAU', code: 'FRA', kit: KITS.fra, sprint: 9.92, longjump: 7.84, javelin: 81.8, hurdles: 12.44, shotput: 21.2, skijump: 128.2, snowboard: 10.12, curling: 64 },
-  { id: 'okafor', name: 'D. OKAFOR', code: 'NGA', kit: KITS.nga, sprint: 9.98, longjump: 8.44, javelin: 86.9, hurdles: 12.31, shotput: 22.8, skijump: 134.0, snowboard: 10.04, curling: 41 },
-  { id: 'voss', name: 'S. VOSS', code: 'GER', kit: KITS.ger, sprint: 9.86, longjump: 8.10, javelin: 88.4, hurdles: 12.38, shotput: 23.1, skijump: 137.5, snowboard: 10.09, curling: 52 },
-  { id: 'silva', name: 'E. SILVA', code: 'BRA', kit: KITS.bra, sprint: 10.08, longjump: 7.96, javelin: 79.6, hurdles: 12.51, shotput: 20.9, skijump: 125.4, snowboard: 10.24, curling: 85 },
-  { id: 'hassan', name: 'M. HASSAN', code: 'KEN', kit: KITS.ken, sprint: 10.16, longjump: 7.62, javelin: 85.1, hurdles: 12.62, shotput: 21.8, skijump: 131.8, snowboard: 10.31, curling: 110 },
-  { id: 'petrov', name: 'A. PETROV', code: 'CRO', kit: KITS.cro, sprint: 10.29, longjump: 8.22, javelin: 90.6, hurdles: 12.72, shotput: 23.4, skijump: 139.2, snowboard: 10.37, curling: 37 }
+  { id: 'nakamura', name: 'K. NAKAMURA', code: 'JPN', kit: KITS.jpn, sprint: 9.79, longjump: 8.31, javelin: 83.5, hurdles: 12.25, shotput: 22.4, skijump: 136.5, snowboard: 9.98, curling: 28, speedskating: 34.12, bobsleigh: 55.1 },
+  { id: 'moreau', name: 'L. MOREAU', code: 'FRA', kit: KITS.fra, sprint: 9.92, longjump: 7.84, javelin: 81.8, hurdles: 12.44, shotput: 21.2, skijump: 128.2, snowboard: 10.12, curling: 64, speedskating: 34.74, bobsleigh: 56.2 },
+  { id: 'okafor', name: 'D. OKAFOR', code: 'NGA', kit: KITS.nga, sprint: 9.98, longjump: 8.44, javelin: 86.9, hurdles: 12.31, shotput: 22.8, skijump: 134.0, snowboard: 10.04, curling: 41, speedskating: 34.56, bobsleigh: 55.8 },
+  { id: 'voss', name: 'S. VOSS', code: 'GER', kit: KITS.ger, sprint: 9.86, longjump: 8.10, javelin: 88.4, hurdles: 12.38, shotput: 23.1, skijump: 137.5, snowboard: 10.09, curling: 52, speedskating: 34.28, bobsleigh: 54.7 },
+  { id: 'silva', name: 'E. SILVA', code: 'BRA', kit: KITS.bra, sprint: 10.08, longjump: 7.96, javelin: 79.6, hurdles: 12.51, shotput: 20.9, skijump: 125.4, snowboard: 10.24, curling: 85, speedskating: 35.02, bobsleigh: 56.8 },
+  { id: 'hassan', name: 'M. HASSAN', code: 'KEN', kit: KITS.ken, sprint: 10.16, longjump: 7.62, javelin: 85.1, hurdles: 12.62, shotput: 21.8, skijump: 131.8, snowboard: 10.31, curling: 110, speedskating: 34.91, bobsleigh: 57.0 },
+  { id: 'petrov', name: 'A. PETROV', code: 'CRO', kit: KITS.cro, sprint: 10.29, longjump: 8.22, javelin: 90.6, hurdles: 12.72, shotput: 23.4, skijump: 139.2, snowboard: 10.37, curling: 37, speedskating: 34.68, bobsleigh: 55.4 }
 ];
 
 const PLAYER = { id: 'player', name: 'YOU', code: 'AUR', kit: KITS.player, player: true };
@@ -112,11 +112,35 @@ const EVENTS = {
     ],
     unit: 'cm', format: 'cm', lower: true, mode: 'curling', hud: 'field',
     glyph: '◎', blurb: 'Weight, line & sweep · precision'
+  },
+  speedskating: {
+    id: 'speedskating', season: 'winter', num: '04', name: '500M SPEED SKATING', title: '500M<br/><em>SPEED SKATING</em>',
+    record: '33.61', recordUnit: 'SECONDS', champ: 'K. NAKAMURA', champCode: 'JPN',
+    desc: 'Attack the straight at full stride. Alternate your skating strokes with a fast, even rhythm and hold speed through the ice.',
+    controls: [
+      { keys: ['A', 'D'], label: 'ALTERNATE SKATING STRIDES' },
+      { keys: ['PACE'], label: 'BUILD TOP SPEED' },
+      { keys: ['LEAN'], label: 'HOLD THE LINE' }
+    ],
+    unit: 's', format: 'time', lower: true, mode: 'sprint', hud: 'sprint',
+    glyph: '↠', blurb: 'Full stride · 500 metres'
+  },
+  bobsleigh: {
+    id: 'bobsleigh', season: 'winter', num: '05', name: 'BOBSLEIGH', title: 'BOB<br/><em>SLEIGH</em>',
+    record: '54.20', recordUnit: 'SECONDS', champ: 'S. VOSS', champCode: 'GER',
+    desc: 'Launch from the ice-house start, then keep the sled on a clean run. Sharp alternating strides build speed before the long straight.',
+    controls: [
+      { keys: ['A', 'D'], label: 'EXPLOSIVE PUSH' },
+      { keys: ['RHYTHM'], label: 'FAST AND CLEAN' },
+      { keys: ['LINE'], label: 'PROTECT SPEED' }
+    ],
+    unit: 's', format: 'time', lower: true, mode: 'sprint', hud: 'sprint',
+    glyph: '▰', blurb: 'Ice-house launch · pure pace'
   }
 };
 
 const SUMMER_EVENTS = ['sprint', 'longjump', 'javelin', 'hurdles', 'shotput'];
-const WINTER_EVENTS = ['skijump', 'snowboard', 'curling'];
+const WINTER_EVENTS = ['skijump', 'snowboard', 'curling', 'speedskating', 'bobsleigh'];
 const seasonEvents = season => season === 'winter' ? WINTER_EVENTS : SUMMER_EVENTS;
 
 class Particles {
@@ -277,11 +301,18 @@ class Game {
     const alt = document.getElementById('seasonAlt');
     if (label) label.textContent = winter ? 'WINTER GAMES' : 'SUMMER GAMES';
     if (alt) alt.textContent = winter ? 'SWITCH TO SUMMER ☀' : 'SWITCH TO WINTER ❄';
+    const seasonToggle = document.querySelector('.season-toggle');
+    if (seasonToggle) {
+      seasonToggle.setAttribute('aria-pressed', String(winter));
+      const intent = winter ? 'summer' : 'winter';
+      seasonToggle.setAttribute('aria-label', `Switch to ${intent} sports`);
+      seasonToggle.title = `Switch to ${intent === 'winter' ? 'winter' : 'summer'} sports`;
+    }
     const sub = document.querySelector('.subword');
     if (sub) sub.innerHTML = winter ? '<b>SNOW</b><i>&amp;</i><b>ICE</b>' : '<b>TRACK</b><i>&amp;</i><b>FIELD</b>';
     const tagline = document.querySelector('.tagline');
     if (tagline) tagline.innerHTML = winter
-      ? 'Three winter finals. Eight athletes. One shot at the podium.<br/>Chase gold on snow and ice.'
+      ? 'Five winter finals. Eight athletes. One shot at the podium.<br/>Chase gold on snow and ice.'
       : 'Five events. Eight athletes. One shot at the podium.<br/>Chase gold under the lights.';
     const hero = document.querySelector('.eyebrow');
     if (hero) hero.innerHTML = `<span>2026</span> THE GOLDEN SERIES <i></i> ${winter ? 'WINTER SESSION' : 'NIGHT SESSION'}`;
@@ -301,7 +332,7 @@ class Game {
     }
     const ticker = document.querySelector('.ticker-track');
     if (ticker) ticker.innerHTML = winter
-      ? '<span>WELCOME TO OLYMPIA WINTER PARK</span><span>SKI JUMP • SNOWBOARD X • CURLING</span><span>THE WINTER SESSION BEGINS</span><span>CHASE THE GOLD</span>'
+      ? '<span>WELCOME TO OLYMPIA WINTER PARK</span><span>SKI JUMP • SNOWBOARD X • CURLING • SPEED SKATING • BOBSLEIGH</span><span>THE WINTER SESSION BEGINS</span><span>CHASE THE GOLD</span>'
       : '<span>WELCOME TO OLYMPIA STADIUM</span><span>100M • LONG JUMP • JAVELIN • HURDLES • SHOT PUT</span><span>THE NIGHT SESSION BEGINS</span><span>CHASE THE GOLD</span>';
     this.refreshEventLists();
   }
@@ -588,6 +619,8 @@ class Game {
     if (id === 'sprint') return new SprintEvent(this, options);
     if (id === 'hurdles') return new SprintEvent(this, { ...options, id: 'hurdles', hurdles: [13, 23, 33, 43, 53, 63, 73, 83, 93, 99], distanceScale: 0.82 });
     if (id === 'snowboard') return new SprintEvent(this, { ...options, id: 'snowboard', board: true, spray: true });
+    if (id === 'speedskating') return new SprintEvent(this, { ...options, id: 'speedskating', distance: 500, distanceScale: 2.5, board: false, spray: true });
+    if (id === 'bobsleigh') return new SprintEvent(this, { ...options, id: 'bobsleigh', distance: 100, distanceScale: 1.12, board: false, spray: true });
     if (id === 'longjump') return new LongJumpEvent(this, options);
     if (id === 'javelin') return new JavelinEvent(this, options);
     if (id === 'shotput') return new JavelinEvent(this, { ...options, id: 'shotput', optAngle: 42, angleAmp: 9, base: 12.4, span: 11.7, max: 24.1 });
@@ -915,7 +948,8 @@ class Game {
     if (this.fields) return;
     const jitter = {
       sprint: [0.055, 2], longjump: [0.09, 2], javelin: [1.1, 1], hurdles: [0.07, 2],
-      shotput: [0.3, 1], skijump: [1.6, 1], snowboard: [0.06, 2], curling: [9, 0]
+      shotput: [0.3, 1], skijump: [1.6, 1], snowboard: [0.06, 2], curling: [9, 0],
+      speedskating: [0.08, 2], bobsleigh: [0.12, 2]
     };
     const f = {};
     for (const id of Object.keys(EVENTS)) {
